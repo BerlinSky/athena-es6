@@ -1,0 +1,36 @@
+.l-siteContainer {
+	display: flex;
+	flex-direction: column;
+
+  & > * {
+    flex:1 1 auto;
+  }
+}
+
+.l-mainContent {
+  overflow-x: hidden;
+}
+
+.l-panelContainer {
+  display: flex;
+
+  .l-panel-fullWidth {
+    flex-basis: 100%;
+  }
+
+  .l-panel:nth-child(1) {
+    flex-basis: 66.66666%;
+  }
+  .l-panel:nth-child(2) {
+    flex-basis: 33.33333%;
+  }
+}
+
+.l-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
