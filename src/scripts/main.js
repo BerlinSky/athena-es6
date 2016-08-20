@@ -1,8 +1,19 @@
-import {Car} from './components/car.js';
-import {Drone} from './components/drone.js';
-import {fleet} from './fleet-data.js';
-import {FleetDataService} from './services/fleet-data-service.js';
-
 import { books } from './data/books-data';
+import { BookDataService } from './services/book-data-service';
 
-console.table(books);
+const dataService = new BookDataService();
+dataService.populateData(books);
+
+// const bookList = dataService.getBookListSortedByIsbn();
+const bookList = dataService.getBookListSortedByTitle();
+
+console.table(bookList);
+
+const book = dataService.getCartByIsbn('1451673310');
+
+console.log(book);
+
+const book2 = dataService.searchBooksByTitle('The');
+
+console.log(book2);
+
