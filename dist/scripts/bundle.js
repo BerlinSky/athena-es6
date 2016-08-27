@@ -9820,24 +9820,24 @@ return jQuery;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Application = undefined;
+exports.App = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _uiNavBar = require("./ui-components/ui-nav-bar.js");
+var _navBar = require("../ui-components/nav-bar.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Application = exports.Application = function () {
-  function Application(appTitle) {
-    _classCallCheck(this, Application);
+var App = exports.App = function () {
+  function App(appTitle) {
+    _classCallCheck(this, App);
 
-    this.navBar = new _uiNavBar.UINavBar(appTitle);
+    this.navBar = new _navBar.NavBar(appTitle);
     this.routes = {};
     this.defaultRoute = null;
   }
 
-  _createClass(Application, [{
+  _createClass(App, [{
     key: "configureRoutes",
     value: function configureRoutes() {
       this._createRoute("Home", null, true);
@@ -9856,7 +9856,7 @@ var Application = exports.Application = function () {
   }, {
     key: "render",
     value: function render(component) {
-      this.navBar.appendComponent(component);
+      this.navBar.appendToComponent(component);
       if (this.defaultRoute) {
         this.enableRoute(this.defaultRoute);
       }
@@ -9870,10 +9870,10 @@ var Application = exports.Application = function () {
     }
   }]);
 
-  return Application;
+  return App;
 }();
 
-},{"./ui-components/ui-nav-bar.js":11}],3:[function(require,module,exports){
+},{"../ui-components/nav-bar.js":10}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9961,9 +9961,7 @@ var _booksData = require('./data/books-data');
 
 var _bookDataService = require('./services/book-data-service');
 
-var _application = require('./application');
-
-var _uiBaseComponent = require('./ui-components/ui-base-component.js');
+var _app = require('./application/app');
 
 var _button = require('./ui-components/button');
 
@@ -9990,9 +9988,9 @@ var book2 = dataService.searchBooksByTitle('The');
 console.log(book2);
 
 var appTitle = "My Book List";
-var app = new _application.Application(appTitle);
+var app = new _app.App(appTitle);
 app.configureRoutes();
-// app.render($('body'));
+app.render((0, _jquery2.default)('body'));
 
 var b = new _button.Button("Click Me");
 b.appendToComponent((0, _jquery2.default)('body'));
@@ -10005,7 +10003,7 @@ var tableHeader = "isbn author title publisher pubdate price".split(' ');
 var dataTable = new _table.Table(tableHeader, bookList);
 dataTable.appendToComponent((0, _jquery2.default)('body'));
 
-},{"./application":2,"./data/books-data":4,"./services/book-data-service":6,"./ui-components/button":7,"./ui-components/image":8,"./ui-components/table":9,"./ui-components/ui-base-component.js":10,"jquery":1}],6:[function(require,module,exports){
+},{"./application/app":2,"./data/books-data":4,"./services/book-data-service":6,"./ui-components/button":8,"./ui-components/image":9,"./ui-components/table":11,"jquery":1}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10111,13 +10109,66 @@ var BookDataService = exports.BookDataService = function () {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.UIBaseComponent = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var UIBaseComponent = exports.UIBaseComponent = function () {
+	function UIBaseComponent() {
+		_classCallCheck(this, UIBaseComponent);
+
+		this.component = null;
+	}
+
+	_createClass(UIBaseComponent, [{
+		key: 'addComponent',
+		value: function addComponent() {
+			throw 'Required: override addComponent()';
+		}
+	}, {
+		key: 'appendToComponent',
+		value: function appendToComponent(comp) {
+			this._createComponent();
+			comp.append(this.component);
+			this._enableJS();
+		}
+	}, {
+		key: '_createComponent',
+		value: function _createComponent() {
+			var comp = this.addComponent();
+			this.component = (0, _jquery2.default)(comp);
+		}
+	}, {
+		key: '_enableJS',
+		value: function _enableJS() {
+			componentHandler.upgradeElement(this.component[0]);
+		}
+	}]);
+
+	return UIBaseComponent;
+}();
+
+},{"jquery":1}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Button = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _uiBaseComponent = require('./ui-base-component');
+var _baseComponent = require('./base-component');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10151,9 +10202,9 @@ var Button = exports.Button = function (_UIBaseComponent) {
   }]);
 
   return Button;
-}(_uiBaseComponent.UIBaseComponent);
+}(_baseComponent.UIBaseComponent);
 
-},{"./ui-base-component":10}],8:[function(require,module,exports){
+},{"./base-component":7}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10163,7 +10214,7 @@ exports.Image = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _uiBaseComponent = require('./ui-base-component');
+var _baseComponent = require('./base-component');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10197,9 +10248,84 @@ var Image = exports.Image = function (_UIBaseComponent) {
   }]);
 
   return Image;
-}(_uiBaseComponent.UIBaseComponent);
+}(_baseComponent.UIBaseComponent);
 
-},{"./ui-base-component":10}],9:[function(require,module,exports){
+},{"./base-component":7}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.NavBar = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _baseComponent = require('./base-component');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NavBar = exports.NavBar = function (_UIBaseComponent) {
+  _inherits(NavBar, _UIBaseComponent);
+
+  function NavBar(title) {
+    _classCallCheck(this, NavBar);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NavBar).call(this));
+
+    _this.title = title;
+    _this.links = [];
+    return _this;
+  }
+
+  _createClass(NavBar, [{
+    key: 'addLink',
+    value: function addLink(title, href) {
+      this.links.push({
+        title: title,
+        href: href
+      });
+    }
+  }, {
+    key: 'addComponent',
+    value: function addComponent() {
+      var links = '';
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.links[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var link = _step.value;
+
+          links += '<a class="mdl-navigation__link"\n                  href="' + link.href + '">' + link.title + '</a>\n';
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return '\n      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">\n        <header class="mdl-layout__header">\n            <div class="mdl-layout__header-row">\n            <!-- Title -->\n            <span class="mdl-layout-title">' + this.title + '</span>\n            <!-- Add spacer, to align navigation to the right -->\n            <div class="mdl-layout-spacer"></div>\n            <!-- Navigation. We hide it in small screens. -->\n            <nav class="mdl-navigation mdl-layout--large-screen-only">\n                ' + links + '\n            </nav>\n            </div>\n        </header>\n        <div class="mdl-layout__drawer">\n            <span class="mdl-layout-title">' + this.title + '</span>\n            <nav class="mdl-navigation">\n                ' + links + '\n            </nav>\n        </div>\n        <main class="mdl-layout__content">\n            <div class="page-content"><!-- Your content goes here --></div>\n        </main>\n      </div>\n    ';
+    }
+  }]);
+
+  return NavBar;
+}(_baseComponent.UIBaseComponent);
+
+},{"./base-component":7}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10209,7 +10335,7 @@ exports.Table = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _uiBaseComponent = require('./ui-base-component');
+var _baseComponent = require('./base-component');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10325,135 +10451,7 @@ var Table = exports.Table = function (_UIBaseComponent) {
   }]);
 
   return Table;
-}(_uiBaseComponent.UIBaseComponent);
+}(_baseComponent.UIBaseComponent);
 
-},{"./ui-base-component":10}],10:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.UIBaseComponent = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jquery = require('jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var UIBaseComponent = exports.UIBaseComponent = function () {
-	function UIBaseComponent() {
-		_classCallCheck(this, UIBaseComponent);
-
-		this.component = null;
-	}
-
-	_createClass(UIBaseComponent, [{
-		key: 'addComponent',
-		value: function addComponent() {
-			throw 'Required: override addComponent()';
-		}
-	}, {
-		key: 'appendToComponent',
-		value: function appendToComponent(comp) {
-			this._createComponent();
-			comp.append(this.component);
-			this._enableJS();
-		}
-	}, {
-		key: '_createComponent',
-		value: function _createComponent() {
-			var comp = this.addComponent();
-			this.component = (0, _jquery2.default)(comp);
-		}
-	}, {
-		key: '_enableJS',
-		value: function _enableJS() {
-			componentHandler.upgradeElement(this.component[0]);
-		}
-	}]);
-
-	return UIBaseComponent;
-}();
-
-},{"jquery":1}],11:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.UINavBar = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _uiBaseComponent = require('./ui-base-component');
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var UINavBar = exports.UINavBar = function (_UIBaseComponent) {
-  _inherits(UINavBar, _UIBaseComponent);
-
-  function UINavBar(title) {
-    _classCallCheck(this, UINavBar);
-
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(UINavBar).call(this));
-
-    _this.title = title;
-    _this.links = [];
-    return _this;
-  }
-
-  _createClass(UINavBar, [{
-    key: 'addLink',
-    value: function addLink(title, href) {
-      this.links.push({
-        title: title,
-        href: href
-      });
-    }
-  }, {
-    key: 'addComponent',
-    value: function addComponent() {
-      var links = '';
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.links[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var link = _step.value;
-
-          links += '<a class="mdl-navigation__link"\n                  href="' + link.href + '">' + link.title + '</a>\n';
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return '\n      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">\n        <header class="mdl-layout__header">\n            <div class="mdl-layout__header-row">\n            <!-- Title -->\n            <span class="mdl-layout-title">' + this.title + '</span>\n            <!-- Add spacer, to align navigation to the right -->\n            <div class="mdl-layout-spacer"></div>\n            <!-- Navigation. We hide it in small screens. -->\n            <nav class="mdl-navigation mdl-layout--large-screen-only">\n                ' + links + '\n            </nav>\n            </div>\n        </header>\n        <div class="mdl-layout__drawer">\n            <span class="mdl-layout-title">' + this.title + '</span>\n            <nav class="mdl-navigation">\n                ' + links + '\n            </nav>\n        </div>\n        <main class="mdl-layout__content">\n            <div class="page-content"><!-- Your content goes here --></div>\n        </main>\n      </div>\n    ';
-    }
-  }]);
-
-  return UINavBar;
-}(_uiBaseComponent.UIBaseComponent);
-
-},{"./ui-base-component":10}]},{},[5])
+},{"./base-component":7}]},{},[5])
 //# sourceMappingURL=bundle.js.map

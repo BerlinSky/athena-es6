@@ -1,4 +1,4 @@
-import { UIBaseComponent } from './ui-base-component';
+import { UIBaseComponent } from './base-component';
 
 export class Button extends UIBaseComponent {
   

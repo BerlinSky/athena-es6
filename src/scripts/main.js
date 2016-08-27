@@ -3,9 +3,8 @@ import $ from 'jquery';
 import { books } from './data/books-data';
 import { BookDataService } from './services/book-data-service';
 
-import { Application} from './application';
+import { App} from './application/app';
 
-import { UIBaseComponent } from './ui-components/ui-base-component.js';
 import { Button } from './ui-components/button';
 import { Image } from './ui-components/image';
 import { Table } from './ui-components/table';
@@ -27,9 +26,9 @@ const book2 = dataService.searchBooksByTitle('The');
 console.log(book2);
 
 const appTitle = "My Book List";
-const app = new Application(appTitle);     
+const app = new App(appTitle);     
 app.configureRoutes();
-// app.render($('body'));
+app.render($('body'));
 
 const b = new Button("Click Me");
 b.appendToComponent($('body'));

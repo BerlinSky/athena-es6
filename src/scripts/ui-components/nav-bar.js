@@ -1,6 +1,6 @@
-import { UIBaseComponent } from './ui-base-component';
+import { UIBaseComponent } from './base-component';
 
-export class UINavBar extends UIBaseComponent {
+export class NavBar extends UIBaseComponent {
 
   constructor(title) {
     super();
