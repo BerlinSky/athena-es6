@@ -10,17 +10,25 @@ export class UIBaseComponent {
 	}
 
 	appendToComponent(comp) {
-		this._createComponent();
+		this.createComponent();
+
+		console.log('comp > ', comp);
+
 		comp.append(this.component);
-		this._enableJS();
+
+
+		this.enableJS();
 	}
 
-	_createComponent() {
+	createComponent() {
 		const comp = this.addComponent();
+
+		console.log('comp in createComponent > ', comp);
+
 		this.component = $(comp);
 	}
 
-	_enableJS() {
+	enableJS() {
 		componentHandler.upgradeElement(this.component[0]);
 	}
 }

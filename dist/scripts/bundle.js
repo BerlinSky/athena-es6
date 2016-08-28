@@ -9815,65 +9815,99 @@ return jQuery;
 }));
 
 },{}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.App = undefined;
+exports.ApplicationBase = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _navBar = require("../ui-components/nav-bar.js");
+var _navBar = require('../ui-components/nav-bar.js');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var App = exports.App = function () {
-  function App(appTitle) {
-    _classCallCheck(this, App);
+var ApplicationBase = exports.ApplicationBase = function () {
 
-    this.navBar = new _navBar.NavBar(appTitle);
+  // constructor(title) {
+  //     this.title = title;
+  //     this.titleBar = new TitleBar(this.title);
+  //     this.routeMap = {};
+  //     this.defaultRoute = null;
+  // }
+
+  function ApplicationBase(appTitle) {
+    _classCallCheck(this, ApplicationBase);
+
+    this.appTitle = appTitle;
+    this.navBar = new _navBar.NavBar(this.appTitle);
     this.routes = {};
     this.defaultRoute = null;
   }
 
-  _createClass(App, [{
-    key: "configureRoutes",
-    value: function configureRoutes() {
-      this._createRoute("Home", null, true);
-      this._createRoute("Books", null);
-      this._createRoute("Authors", null);
-      this._createRoute("Clubs", null);
-      this._createRoute("Support", null);
-    }
-  }, {
-    key: "enableRoute",
+  // activateRoute(route) {
+  //     let content = this.titleBar.element.find('.page-content');
+  //     content.empty();
+
+  //     this.routeMap[route].appendToElement(content);
+  // }
+
+  _createClass(ApplicationBase, [{
+    key: 'enableRoute',
     value: function enableRoute(routeId) {
-      var component = this.navBar.element.find('.page-content');
+      var component = this.navBar.component.find('.page-content');
       component.empty();
-      this.routes[routeId].appendToElement(component);
+
+      console.log('component in app >', component);
+      this.routes[routeId].appendToComponent(component);
     }
+
+    // addRoute(id, pageObject, defaultRoute = false) {
+    //     this.titleBar.addLink(id, '');
+
+    //     this.routeMap[id] = pageObject;
+
+    //     if (defaultRoute) {
+    //         this.defaultRoute = id;
+    //     }
+    // }
+
   }, {
-    key: "render",
+    key: 'createRoute',
+    value: function createRoute(routeId, pageComponent) {
+      var isDefault = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+      this.navBar.addLink(routeId, '');
+      this.routes[routeId] = pageComponent;
+
+      if (isDefault) {
+        this.defaultRoute = routeId;
+      }
+    }
+
+    // show(element) {
+    //     this.titleBar.appendToElement(element);
+
+    //     if (this.defaultRoute) {
+    //         this.activateRoute(this.defaultRoute);
+    //     }
+    // }
+
+  }, {
+    key: 'render',
     value: function render(component) {
       this.navBar.appendToComponent(component);
       if (this.defaultRoute) {
         this.enableRoute(this.defaultRoute);
       }
     }
-  }, {
-    key: "_createRoute",
-    value: function _createRoute(routeId, pageComponent, isDefault) {
-      this.navBar.addLink(routeId, '');
-      this.routes[routeId] = pageComponent;
-      this.defaultRoute = isDefault ? routeId : null;
-    }
   }]);
 
-  return App;
+  return ApplicationBase;
 }();
 
-},{"../ui-components/nav-bar.js":10}],3:[function(require,module,exports){
+},{"../ui-components/nav-bar.js":11}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9953,6 +9987,11 @@ var books = exports.books = [{
 },{}],5:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.application = exports.App = undefined;
+
 var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
@@ -9961,49 +10000,177 @@ var _booksData = require('./data/books-data');
 
 var _bookDataService = require('./services/book-data-service');
 
-var _app = require('./application/app');
+var _applicationBase = require('./application/application-base');
 
-var _button = require('./ui-components/button');
-
-var _image = require('./ui-components/image');
-
-var _table = require('./ui-components/table');
+var _homePage = require('./pages/home-page');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var dataService = new _bookDataService.BookDataService();
-dataService.populateData(_booksData.books);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import { App} from './application/app';
+
+
+var App = exports.App = function (_ApplicationBase) {
+  _inherits(App, _ApplicationBase);
+
+  function App() {
+    _classCallCheck(this, App);
+
+    // this.dataService = new FleetDataService();
+    // this.dataService.loadData(fleet);
+
+    // this.addRoute('Home', new HomePage(), true);
+    // this.addRoute('Cars', null);
+    // this.addRoute('Drones', null);
+    // this.addRoute('Map', null);
+
+    // const homePage = new HomePage();
+    // this._createRoute("Home", homePage, true);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, 'My Book List'));
+
+    _this.createRoute('Home', new _homePage.HomePage(), true);
+    _this.createRoute("Books");
+    _this.createRoute("Authors");
+    _this.createRoute("Clubs");
+    _this.createRoute("Support");
+    return _this;
+  }
+
+  return App;
+}(_applicationBase.ApplicationBase);
+
+// configureRoutes() {
+//    const homePage = new HomePage();
+//    this._createRoute("Home", homePage, true);
+
+//    this._createRoute("Books");
+//    this._createRoute("Authors");
+//    this._createRoute("Clubs");
+//    this._createRoute("Support");
+//  }
+
+var application = exports.application = new App();
+application.render((0, _jquery2.default)('body'));
+
+// import { Button } from './ui-components/button';
+// import { Image } from './ui-components/image';
+// import { Table } from './ui-components/table';
+
+// const dataService = new BookDataService();
+// dataService.populateData(books);
 
 // const bookList = dataService.getBookListSortedByIsbn();
-var bookList = dataService.getBookListSortedByTitle();
+// const bookList = dataService.getBookListSortedByTitle();
 
-console.table(bookList);
+// console.table(bookList);
 
-var book = dataService.getCartByIsbn('1451673310');
+// const book = dataService.getCartByIsbn('1451673310');
 
-console.log(book);
+// console.log(book);
 
-var book2 = dataService.searchBooksByTitle('The');
+// const book2 = dataService.searchBooksByTitle('The');
 
-console.log(book2);
+// console.log(book2);
 
-var appTitle = "My Book List";
-var app = new _app.App(appTitle);
-app.configureRoutes();
-app.render((0, _jquery2.default)('body'));
+// const appTitle = "My Book List";
+// const app = new App(appTitle);  
 
-var b = new _button.Button("Click Me");
-b.appendToComponent((0, _jquery2.default)('body'));
+// app.configureRoutes();
+// app.render($('body'));
 
-var imgFile = "./images/vanity-fair.jpg";
-var img = new _image.Image(imgFile);
-img.appendToComponent((0, _jquery2.default)('body'));
+// const b = new Button("Click Me");
+// b.appendToComponent($('body'));
 
-var tableHeader = "isbn author title publisher pubdate price".split(' ');
-var dataTable = new _table.Table(tableHeader, bookList);
-dataTable.appendToComponent((0, _jquery2.default)('body'));
+// const imgFile = "./images/vanity-fair.jpg";
+// const img = new Image(imgFile);
+// img.appendToComponent($('body'));
 
-},{"./application/app":2,"./data/books-data":4,"./services/book-data-service":6,"./ui-components/button":8,"./ui-components/image":9,"./ui-components/table":11,"jquery":1}],6:[function(require,module,exports){
+// const tableHeader = "isbn author title publisher pubdate price".split(' ');
+// const dataTable = new Table(tableHeader, bookList);
+// dataTable.appendToComponent($('body'));
+
+},{"./application/application-base":2,"./data/books-data":4,"./pages/home-page":6,"./services/book-data-service":7,"jquery":1}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HomePage = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _baseComponent = require('../ui-components/base-component.js');
+
+var _image = require('../ui-components/image');
+
+var _button = require('../ui-components/button');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // import { BasePage } from './base-page';
+
+
+// import {Image} from './ui/image.js';
+// import {Button} from './ui/button.js';
+// import {application} from './app.js';
+
+// export class HomePage extends BasePage {
+var HomePage = exports.HomePage = function (_UIBaseComponent) {
+  _inherits(HomePage, _UIBaseComponent);
+
+  function HomePage() {
+    _classCallCheck(this, HomePage);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(HomePage).call(this));
+  }
+
+  _createClass(HomePage, [{
+    key: 'createComponent',
+    value: function createComponent() {
+
+      _get(Object.getPrototypeOf(HomePage.prototype), 'createComponent', this).call(this);
+
+      console.log('this.element', this.component);
+
+      var imgFile = "./images/vanity-fair.jpg";
+      var img = new _image.Image(imgFile);
+      img.appendToComponent(this.component);
+
+      // let i = new Image('../images/drone.jpg');
+      // i.appendToElement(this.element);
+
+      // let styleString = 'width: 300px; height: 80px; font-size: 26px; margin: 10px;';
+      // let b = new Button('Self Driving Cars');
+      // b.setStyleString(styleString);
+      // b.appendToElement(this.element);
+      // b.element.click(() => application.activateRoute('Cars'));
+
+      // b = new Button('Drones');
+      // b.setStyleString(styleString);
+      // b.appendToElement(this.element);
+      // b.element.click(() => application.activateRoute('Drones'));
+    }
+  }, {
+    key: 'addComponent',
+    value: function addComponent() {
+      return '<div style="text-align: center;"></div>';
+    }
+  }]);
+
+  return HomePage;
+}(_baseComponent.UIBaseComponent);
+
+},{"../ui-components/base-component.js":8,"../ui-components/button":9,"../ui-components/image":10}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10105,7 +10272,7 @@ var BookDataService = exports.BookDataService = function () {
 	return BookDataService;
 }();
 
-},{"../components/book":3}],7:[function(require,module,exports){
+},{"../components/book":3}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10138,19 +10305,26 @@ var UIBaseComponent = exports.UIBaseComponent = function () {
 	}, {
 		key: 'appendToComponent',
 		value: function appendToComponent(comp) {
-			this._createComponent();
+			this.createComponent();
+
+			console.log('comp > ', comp);
+
 			comp.append(this.component);
-			this._enableJS();
+
+			this.enableJS();
 		}
 	}, {
-		key: '_createComponent',
-		value: function _createComponent() {
+		key: 'createComponent',
+		value: function createComponent() {
 			var comp = this.addComponent();
+
+			console.log('comp in createComponent > ', comp);
+
 			this.component = (0, _jquery2.default)(comp);
 		}
 	}, {
-		key: '_enableJS',
-		value: function _enableJS() {
+		key: 'enableJS',
+		value: function enableJS() {
 			componentHandler.upgradeElement(this.component[0]);
 		}
 	}]);
@@ -10158,7 +10332,7 @@ var UIBaseComponent = exports.UIBaseComponent = function () {
 	return UIBaseComponent;
 }();
 
-},{"jquery":1}],8:[function(require,module,exports){
+},{"jquery":1}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10204,7 +10378,7 @@ var Button = exports.Button = function (_UIBaseComponent) {
   return Button;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":7}],9:[function(require,module,exports){
+},{"./base-component":8}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10250,7 +10424,7 @@ var Image = exports.Image = function (_UIBaseComponent) {
   return Image;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":7}],10:[function(require,module,exports){
+},{"./base-component":8}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10325,133 +10499,5 @@ var NavBar = exports.NavBar = function (_UIBaseComponent) {
   return NavBar;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":7}],11:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Table = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _baseComponent = require('./base-component');
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Table = exports.Table = function (_UIBaseComponent) {
-  _inherits(Table, _UIBaseComponent);
-
-  function Table(header, data) {
-    _classCallCheck(this, Table);
-
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Table).call(this));
-
-    _this.header = header;
-    _this.data = data;
-    _this.styles = '';
-    return _this;
-  }
-
-  _createClass(Table, [{
-    key: 'addComponent',
-    value: function addComponent() {
-
-      var headerRow = '';
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.header[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var hdr = _step.value;
-
-          headerRow += '<th class="mdl-data-table__cell--non-numeric">' + hdr + '</th>\n';
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      var tableRow = '';
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var dataRow = _step2.value;
-
-          tableRow += '<tr>';
-          // let tdTags = '';
-          var _iteratorNormalCompletion3 = true;
-          var _didIteratorError3 = false;
-          var _iteratorError3 = undefined;
-
-          try {
-            for (var _iterator3 = this.header[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-              var _hdr = _step3.value;
-
-              var dataCol = dataRow[_hdr.toLowerCase()];
-              tableRow += '<td class="mdl-data-table__cell--non-numeric">\n                     ' + dataCol + '\n                   </td>\n                  ';
-            }
-          } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                _iterator3.return();
-              }
-            } finally {
-              if (_didIteratorError3) {
-                throw _iteratorError3;
-              }
-            }
-          }
-
-          tableRow += '</tr>';
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return '\n      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">\n        <thead>\n          <tr>\n          ' + headerRow + '\n          </tr>\n        </thead>\n        <tbody>\n          ' + tableRow + '\n        </tbody>\n      </table>\n    ';
-    }
-  }, {
-    key: 'setStyles',
-    value: function setStyles(styles) {
-      this.styles = styles;
-    }
-  }]);
-
-  return Table;
-}(_baseComponent.UIBaseComponent);
-
-},{"./base-component":7}]},{},[5])
+},{"./base-component":8}]},{},[5])
 //# sourceMappingURL=bundle.js.map
