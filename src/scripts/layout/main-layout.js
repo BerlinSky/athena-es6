@@ -12,19 +12,10 @@ export class MainLayout extends UIBaseComponent {
   addComponent() {
     return `
 		  <div class="l-siteContainer l-header-fixed l-footer-fixed siteContainer">
-			
+
 	      <navigation class="l-navigation navigation js-navigationContainer"></navigation>
 
-				<section class="searchContainer js-searchContainer">
-				  <form class="searchForm">
-				    <input class="searchForm__input" type="search" placeholder="Search..."/>
-				    <button class="searchForm__submit js-buttonSearchSubmit" type="submit">Search</button>
-				  </form>
-				  <div class="searchContent">
-
-				  </div>
-				  <span class="searchClose js-buttonSearchClose"></span>
-				</section>
+	      <section class="l-mainContent mainContent js-mainContentContainer"></section>
 
 				<section class="js-footerContainer"></section>
 	    </div>
