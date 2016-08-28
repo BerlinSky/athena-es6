@@ -1,5 +1,6 @@
 // import { NavBar } from '../ui-components/nav-bar.js';
 import { MainLayout } from '../layout/main-layout';
+import { Navigation } from '../ui-components/navigation';
 import { Footer } from '../ui-components/footer';
 
 export class ApplicationBase {
@@ -31,13 +32,20 @@ export class ApplicationBase {
   render(component) {
     // this.navBar.appendToComponent(component);
     this.layout.appendToComponent(component);
+    this._appendNavigation();
     this._appendFooter();
     // if (this.defaultRoute) {
     //   this.enableRoute(this.defaultRoute);
     // }
   }
 
-   _appendFooter() {
+   _appendNavigation() {
+    const navigation = new Navigation();
+    const navigationContainer = this.layout.component.find('.js-navigationContainer');
+    navigation.appendToComponent(navigationContainer);
+  } 
+
+  _appendFooter() {
     const footer = new Footer();
     const footerContainer = this.layout.component.find('.js-footerContainer');
     footer.appendToComponent(footerContainer);

@@ -9827,6 +9827,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _mainLayout = require('../layout/main-layout');
 
+var _navigation = require('../ui-components/navigation');
+
 var _footer = require('../ui-components/footer');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9867,10 +9869,18 @@ var ApplicationBase = exports.ApplicationBase = function () {
     value: function render(component) {
       // this.navBar.appendToComponent(component);
       this.layout.appendToComponent(component);
+      this._appendNavigation();
       this._appendFooter();
       // if (this.defaultRoute) {
       //   this.enableRoute(this.defaultRoute);
       // }
+    }
+  }, {
+    key: '_appendNavigation',
+    value: function _appendNavigation() {
+      var navigation = new _navigation.Navigation();
+      var navigationContainer = this.layout.component.find('.js-navigationContainer');
+      navigation.appendToComponent(navigationContainer);
     }
   }, {
     key: '_appendFooter',
@@ -9884,7 +9894,7 @@ var ApplicationBase = exports.ApplicationBase = function () {
   return ApplicationBase;
 }();
 
-},{"../layout/main-layout":5,"../ui-components/footer":11}],3:[function(require,module,exports){
+},{"../layout/main-layout":5,"../ui-components/footer":11,"../ui-components/navigation":13}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9965,7 +9975,7 @@ var books = exports.books = [{
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+		value: true
 });
 exports.MainLayout = undefined;
 
@@ -9982,27 +9992,27 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var MainLayout = exports.MainLayout = function (_UIBaseComponent) {
-  _inherits(MainLayout, _UIBaseComponent);
+		_inherits(MainLayout, _UIBaseComponent);
 
-  function MainLayout() {
-    _classCallCheck(this, MainLayout);
+		function MainLayout() {
+				_classCallCheck(this, MainLayout);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(MainLayout).call(this));
-  }
+				return _possibleConstructorReturn(this, Object.getPrototypeOf(MainLayout).call(this));
+		}
 
-  _createClass(MainLayout, [{
-    key: 'createComponent',
-    value: function createComponent() {
-      _get(Object.getPrototypeOf(MainLayout.prototype), 'createComponent', this).call(this);
-    }
-  }, {
-    key: 'addComponent',
-    value: function addComponent() {
-      return '\n\t\t\t<div class="l-siteContainer l-header-fixed l-footer-fixed siteContainer">\n\n        <section class="searchContainer js-searchContainer">\n\t        <form class="searchForm">\n\t          <input class="searchForm__input" type="search" placeholder="Search..."/>\n\t          <button class="searchForm__submit js-buttonSearchSubmit" type="submit">Search</button>\n\t        </form>\n\t        <div class="searchContent">\n\n\t        </div>\n\t        <span class="searchClose js-buttonSearchClose"></span>\n\t      </section>\n\n\t      <section class="js-footerContainer"></section>\n\t    </div>\n    ';
-    }
-  }]);
+		_createClass(MainLayout, [{
+				key: 'createComponent',
+				value: function createComponent() {
+						_get(Object.getPrototypeOf(MainLayout.prototype), 'createComponent', this).call(this);
+				}
+		}, {
+				key: 'addComponent',
+				value: function addComponent() {
+						return '\n\t\t  <div class="l-siteContainer l-header-fixed l-footer-fixed siteContainer">\n\t\t\t\n\t      <navigation class="l-navigation navigation js-navigationContainer"></navigation>\n\n\t\t\t\t<section class="searchContainer js-searchContainer">\n\t\t\t\t  <form class="searchForm">\n\t\t\t\t    <input class="searchForm__input" type="search" placeholder="Search..."/>\n\t\t\t\t    <button class="searchForm__submit js-buttonSearchSubmit" type="submit">Search</button>\n\t\t\t\t  </form>\n\t\t\t\t  <div class="searchContent">\n\n\t\t\t\t  </div>\n\t\t\t\t  <span class="searchClose js-buttonSearchClose"></span>\n\t\t\t\t</section>\n\n\t\t\t\t<section class="js-footerContainer"></section>\n\t    </div>\n    ';
+				}
+		}]);
 
-  return MainLayout;
+		return MainLayout;
 }(_baseComponent.UIBaseComponent);
 
 },{"../ui-components/base-component.js":9}],6:[function(require,module,exports){
@@ -10318,18 +10328,12 @@ var UIBaseComponent = exports.UIBaseComponent = function () {
 		value: function appendToComponent(comp) {
 			this.createComponent();
 			comp.append(this.component);
-			this.enableJS();
 		}
 	}, {
 		key: 'createComponent',
 		value: function createComponent() {
 			var comp = this.addComponent();
 			this.component = (0, _jquery2.default)(comp);
-		}
-	}, {
-		key: 'enableJS',
-		value: function enableJS() {
-			// componentHandler.upgradeElement(this.component[0]);
 		}
 	}]);
 
@@ -10471,6 +10475,51 @@ var Image = exports.Image = function (_UIBaseComponent) {
   }]);
 
   return Image;
+}(_baseComponent.UIBaseComponent);
+
+},{"./base-component":9}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Navigation = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _baseComponent = require('./base-component');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Navigation = exports.Navigation = function (_UIBaseComponent) {
+  _inherits(Navigation, _UIBaseComponent);
+
+  function Navigation() {
+    _classCallCheck(this, Navigation);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Navigation).call(this));
+
+    _this.styles = '';
+    return _this;
+  }
+
+  _createClass(Navigation, [{
+    key: 'addComponent',
+    value: function addComponent() {
+      return '\n      <h1 class="logo"><a href="#">Athena</a></h1>\n      <nav class="l-navlinks navlinks">\n      <ul>\n        <li class="navlinks__item"><a href="#">Books</a></li>\n        <li class="navlinks__item"><a href="#">Authors</a></li>\n        <li class="navlinks__item"><a href="#">Clubs</a></li>\n        <li class="navlinks__item"><a href="#">Login</a></li>\n        <li class="navlinks__item"><a href="#">Join</a></li>\n      </ul>\n      </nav>\n      <nav class="navActions">\n        <ul>\n          <li class="navActions__item menu">\n            <a class="js-actionMenu fa-bars">Menu</a>\n          </li>\n        </ul>\n      </nav>\n    ';
+    }
+  }, {
+    key: 'setStyles',
+    value: function setStyles(styles) {
+      this.styles = styles;
+    }
+  }]);
+
+  return Navigation;
 }(_baseComponent.UIBaseComponent);
 
 },{"./base-component":9}]},{},[6])

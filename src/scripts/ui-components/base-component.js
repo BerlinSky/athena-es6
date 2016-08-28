@@ -12,16 +12,11 @@ export class UIBaseComponent {
 	appendToComponent(comp) {
 		this.createComponent();
 		comp.append(this.component);
-		this.enableJS();
 	}
 
 	createComponent() {
 		const comp = this.addComponent();
 		this.component = $(comp);
-	}
-
-	enableJS() {
-		// componentHandler.upgradeElement(this.component[0]);
 	}
 }
 
