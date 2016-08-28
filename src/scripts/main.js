@@ -5,6 +5,7 @@ import { BookDataService } from './services/book-data-service';
 
 // import { App} from './application/app';
 import { ApplicationBase } from './application/application-base';
+import { MainLayout } from './layout/main-layout';
 import { HomePage } from './pages/home-page';
 
 export class App extends ApplicationBase {
@@ -20,8 +21,9 @@ export class App extends ApplicationBase {
 
     // const homePage = new HomePage();
     // this._createRoute("Home", homePage, true);
+    const mainLayout = new MainLayout();
 
-    this.createRoute('Home', new HomePage(), true);
+    this.createRoute('Home', mainLayout, true);
     this.createRoute("Books");
     this.createRoute("Authors");
     this.createRoute("Clubs");

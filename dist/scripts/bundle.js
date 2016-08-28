@@ -9907,7 +9907,7 @@ var ApplicationBase = exports.ApplicationBase = function () {
   return ApplicationBase;
 }();
 
-},{"../ui-components/nav-bar.js":11}],3:[function(require,module,exports){
+},{"../ui-components/nav-bar.js":12}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9990,6 +9990,50 @@ var books = exports.books = [{
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.MainLayout = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _baseComponent = require('../ui-components/base-component.js');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainLayout = exports.MainLayout = function (_UIBaseComponent) {
+  _inherits(MainLayout, _UIBaseComponent);
+
+  function MainLayout() {
+    _classCallCheck(this, MainLayout);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(MainLayout).call(this));
+  }
+
+  _createClass(MainLayout, [{
+    key: 'createComponent',
+    value: function createComponent() {
+      _get(Object.getPrototypeOf(MainLayout.prototype), 'createComponent', this).call(this);
+    }
+  }, {
+    key: 'addComponent',
+    value: function addComponent() {
+      return '<div style="text-align: center;">What???</div>';
+    }
+  }]);
+
+  return MainLayout;
+}(_baseComponent.UIBaseComponent);
+
+},{"../ui-components/base-component.js":9}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.application = exports.App = undefined;
 
 var _jquery = require('jquery');
@@ -10001,6 +10045,8 @@ var _booksData = require('./data/books-data');
 var _bookDataService = require('./services/book-data-service');
 
 var _applicationBase = require('./application/application-base');
+
+var _mainLayout = require('./layout/main-layout');
 
 var _homePage = require('./pages/home-page');
 
@@ -10034,7 +10080,9 @@ var App = exports.App = function (_ApplicationBase) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, 'My Book List'));
 
-    _this.createRoute('Home', new _homePage.HomePage(), true);
+    var mainLayout = new _mainLayout.MainLayout();
+
+    _this.createRoute('Home', mainLayout, true);
     _this.createRoute("Books");
     _this.createRoute("Authors");
     _this.createRoute("Clubs");
@@ -10095,7 +10143,7 @@ application.render((0, _jquery2.default)('body'));
 // const dataTable = new Table(tableHeader, bookList);
 // dataTable.appendToComponent($('body'));
 
-},{"./application/application-base":2,"./data/books-data":4,"./pages/home-page":6,"./services/book-data-service":7,"jquery":1}],6:[function(require,module,exports){
+},{"./application/application-base":2,"./data/books-data":4,"./layout/main-layout":5,"./pages/home-page":7,"./services/book-data-service":8,"jquery":1}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10145,20 +10193,6 @@ var HomePage = exports.HomePage = function (_UIBaseComponent) {
       var imgFile = "./images/vanity-fair.jpg";
       var img = new _image.Image(imgFile);
       img.appendToComponent(this.component);
-
-      // let i = new Image('../images/drone.jpg');
-      // i.appendToElement(this.element);
-
-      // let styleString = 'width: 300px; height: 80px; font-size: 26px; margin: 10px;';
-      // let b = new Button('Self Driving Cars');
-      // b.setStyleString(styleString);
-      // b.appendToElement(this.element);
-      // b.element.click(() => application.activateRoute('Cars'));
-
-      // b = new Button('Drones');
-      // b.setStyleString(styleString);
-      // b.appendToElement(this.element);
-      // b.element.click(() => application.activateRoute('Drones'));
     }
   }, {
     key: 'addComponent',
@@ -10170,7 +10204,7 @@ var HomePage = exports.HomePage = function (_UIBaseComponent) {
   return HomePage;
 }(_baseComponent.UIBaseComponent);
 
-},{"../ui-components/base-component.js":8,"../ui-components/button":9,"../ui-components/image":10}],7:[function(require,module,exports){
+},{"../ui-components/base-component.js":9,"../ui-components/button":10,"../ui-components/image":11}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10272,7 +10306,7 @@ var BookDataService = exports.BookDataService = function () {
 	return BookDataService;
 }();
 
-},{"../components/book":3}],8:[function(require,module,exports){
+},{"../components/book":3}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10332,7 +10366,7 @@ var UIBaseComponent = exports.UIBaseComponent = function () {
 	return UIBaseComponent;
 }();
 
-},{"jquery":1}],9:[function(require,module,exports){
+},{"jquery":1}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10378,7 +10412,7 @@ var Button = exports.Button = function (_UIBaseComponent) {
   return Button;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":8}],10:[function(require,module,exports){
+},{"./base-component":9}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10424,7 +10458,7 @@ var Image = exports.Image = function (_UIBaseComponent) {
   return Image;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":8}],11:[function(require,module,exports){
+},{"./base-component":9}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10499,5 +10533,5 @@ var NavBar = exports.NavBar = function (_UIBaseComponent) {
   return NavBar;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":8}]},{},[5])
+},{"./base-component":9}]},{},[6])
 //# sourceMappingURL=bundle.js.map
