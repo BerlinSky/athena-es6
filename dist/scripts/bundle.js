@@ -9833,6 +9833,8 @@ var _footer = require('../ui-components/footer');
 
 var _searchPanel = require('../ui-components/search-panel');
 
+var _bookSearchResultPartial = require('../pages/book-search-result-partial.js');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ApplicationBase = exports.ApplicationBase = function () {
@@ -9891,6 +9893,11 @@ var ApplicationBase = exports.ApplicationBase = function () {
       var searchPanel = new _searchPanel.SearchPanel();
       var mainContentContainer = this.layout.component.find('.js-mainContentContainer');
       searchPanel.appendToComponent(mainContentContainer);
+
+      var bookSearchResult = new _bookSearchResultPartial.BookSearchResult();
+      console.log('searchResult', bookSearchResult);
+
+      bookSearchResult.appendToComponent(mainContentContainer);
     }
   }, {
     key: '_appendFooter',
@@ -9904,7 +9911,7 @@ var ApplicationBase = exports.ApplicationBase = function () {
   return ApplicationBase;
 }();
 
-},{"../layout/main-layout":5,"../ui-components/footer":11,"../ui-components/navigation":13,"../ui-components/search-panel":14}],3:[function(require,module,exports){
+},{"../layout/main-layout":5,"../pages/book-search-result-partial.js":7,"../ui-components/footer":12,"../ui-components/navigation":14,"../ui-components/search-panel":15}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10025,7 +10032,7 @@ var MainLayout = exports.MainLayout = function (_UIBaseComponent) {
   return MainLayout;
 }(_baseComponent.UIBaseComponent);
 
-},{"../ui-components/base-component.js":9}],6:[function(require,module,exports){
+},{"../ui-components/base-component.js":10}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10140,7 +10147,52 @@ application.render((0, _jquery2.default)('body'));
 // const dataTable = new Table(tableHeader, bookList);
 // dataTable.appendToComponent($('body'));
 
-},{"./application/application-base":2,"./data/books-data":4,"./layout/main-layout":5,"./pages/home-page":7,"./services/book-data-service":8,"jquery":1}],7:[function(require,module,exports){
+},{"./application/application-base":2,"./data/books-data":4,"./layout/main-layout":5,"./pages/home-page":8,"./services/book-data-service":9,"jquery":1}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BookSearchResult = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _baseComponent = require('../ui-components/base-component');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BookSearchResult = exports.BookSearchResult = function (_UIBaseComponent) {
+  _inherits(BookSearchResult, _UIBaseComponent);
+
+  function BookSearchResult() {
+    _classCallCheck(this, BookSearchResult);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(BookSearchResult).call(this));
+
+    _this.styles = 'background-color: #999; color: #333; padding: 5px 10px;';
+    return _this;
+  }
+
+  _createClass(BookSearchResult, [{
+    key: 'addComponent',
+    value: function addComponent() {
+      return '\n      <div style="' + this.styles + '">\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="columnHeading__dataLabel">ISBN</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">TITLE</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">AUTHOR</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">PUBLISHER</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">PUBLISHED</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="columnHeading__dataLabel columnHeading__dataLabel--numeric">PRICE ($)</div>\n          </div>\n        </div>\n\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">0446310786</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">TITLE</div>\n            <div class="dataValue">To Kill a Mockingbird</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">AUTHOR</div>\n            <div class="dataValue">Haper Lee</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHER</div>\n            <div class="dataValue">Grand Central Publishing</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHED</div>\n            <div class="dataValue">October 11, 1988</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">PRICE ($)</div>\n            <div class="dataValue dataValue--numeric">17.33</div>\n          </div>\n        </div>\n\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">0141439556</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">TITLE</div>\n            <div class="dataValue">Wuthering Heights</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">AUTHOR</div>\n            <div class="dataValue">Emily Bronte</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHER</div>\n            <div class="dataValue">Penguin Classic</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHED</div>\n            <div class="dataValue">December 31, 2002</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">PRICE ($)</div>\n            <div class="dataValue dataValue--numeric">12.99</div>\n          </div>\n        </div>\n\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">0684801221</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">TITLE</div>\n            <div class="dataValue">The Old Man and The Sea</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">AUTHOR</div>\n            <div class="dataValue">Ernest Hemingways</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHER</div>\n            <div class="dataValue">Scribner</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHED</div>\n            <div class="dataValue">May 5, 1995</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">PRICE ($)</div>\n            <div class="dataValue dataValue--numeric">15.28</div>\n          </div>\n        </div>\n      </div>\n    ';
+    }
+  }, {
+    key: 'setStyles',
+    value: function setStyles(styles) {
+      this.styles = styles;
+    }
+  }]);
+
+  return BookSearchResult;
+}(_baseComponent.UIBaseComponent);
+
+},{"../ui-components/base-component":10}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10201,7 +10253,7 @@ var HomePage = exports.HomePage = function (_UIBaseComponent) {
   return HomePage;
 }(_baseComponent.UIBaseComponent);
 
-},{"../ui-components/base-component.js":9,"../ui-components/button":10,"../ui-components/image":12}],8:[function(require,module,exports){
+},{"../ui-components/base-component.js":10,"../ui-components/button":11,"../ui-components/image":13}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10303,7 +10355,7 @@ var BookDataService = exports.BookDataService = function () {
 	return BookDataService;
 }();
 
-},{"../components/book":3}],9:[function(require,module,exports){
+},{"../components/book":3}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10350,7 +10402,7 @@ var UIBaseComponent = exports.UIBaseComponent = function () {
 	return UIBaseComponent;
 }();
 
-},{"jquery":1}],10:[function(require,module,exports){
+},{"jquery":1}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10384,7 +10436,7 @@ var Button = exports.Button = function (_UIBaseComponent) {
   _createClass(Button, [{
     key: 'addComponent',
     value: function addComponent() {
-      return '\n    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"\n    style="' + this.styleString + '">\n    ' + this.title + '\n    </button>\n    ';
+      return '\n    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"\n    style="' + this.styles + '">\n    ' + this.title + '\n    </button>\n    ';
     }
   }, {
     key: 'setStyles',
@@ -10396,7 +10448,7 @@ var Button = exports.Button = function (_UIBaseComponent) {
   return Button;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":9}],11:[function(require,module,exports){
+},{"./base-component":10}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10441,7 +10493,7 @@ var Footer = exports.Footer = function (_UIBaseComponent) {
   return Footer;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":9}],12:[function(require,module,exports){
+},{"./base-component":10}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10487,7 +10539,7 @@ var Image = exports.Image = function (_UIBaseComponent) {
   return Image;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":9}],13:[function(require,module,exports){
+},{"./base-component":10}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10532,7 +10584,7 @@ var Navigation = exports.Navigation = function (_UIBaseComponent) {
   return Navigation;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":9}],14:[function(require,module,exports){
+},{"./base-component":10}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10565,7 +10617,7 @@ var SearchPanel = exports.SearchPanel = function (_UIBaseComponent) {
   _createClass(SearchPanel, [{
     key: 'addComponent',
     value: function addComponent() {
-      return '\n      <div class="formContainer">\n      <form class="searchBar">\n      <input type="text" class="searchBar__inputText" placeholder="Search ..." name="">\n      <input type="submit" class="searchBar__button" value="" name="">\n      </form>\n      </div>\n\n      <div>\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="columnHeading__dataLabel">ISBN</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">TITLE</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">AUTHOR</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">PUBLISHER</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="columnHeading__dataLabel">PUBLISHED</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="columnHeading__dataLabel columnHeading__dataLabel--numeric">PRICE ($)</div>\n          </div>\n        </div>\n\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">0446310786</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">TITLE</div>\n            <div class="dataValue">To Kill a Mockingbird</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">AUTHOR</div>\n            <div class="dataValue">Haper Lee</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHER</div>\n            <div class="dataValue">Grand Central Publishing</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHED</div>\n            <div class="dataValue">October 11, 1988</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">PRICE ($)</div>\n            <div class="dataValue dataValue--numeric">17.33</div>\n          </div>\n        </div>\n\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">0141439556</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">TITLE</div>\n            <div class="dataValue">Wuthering Heights</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">AUTHOR</div>\n            <div class="dataValue">Emily Bronte</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHER</div>\n            <div class="dataValue">Penguin Classic</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHED</div>\n            <div class="dataValue">December 31, 2002</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">PRICE ($)</div>\n            <div class="dataValue dataValue--numeric">12.99</div>\n          </div>\n        </div>\n\n        <div class="l-grid__container grid__container grid__container--ruler"> \n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">0684801221</div>\n          </div> \n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">TITLE</div>\n            <div class="dataValue">The Old Man and The Sea</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">AUTHOR</div>\n            <div class="dataValue">Ernest Hemingways</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHER</div>\n            <div class="dataValue">Scribner</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-3">\n            <div class="dataLabel">PUBLISHED</div>\n            <div class="dataValue">May 5, 1995</div>\n          </div>\n          <div class="l-grid__span--xs-16 l-grid__span--md-2">\n            <div class="dataLabel">PRICE ($)</div>\n            <div class="dataValue dataValue--numeric">15.28</div>\n          </div>\n        </div>\n\n      </div>\n    ';
+      return '\n      <div class="formContainer">\n      <form class="searchBar">\n      <input type="text" class="searchBar__inputText" placeholder="Search ..." name="">\n      <input type="submit" class="searchBar__button" value="" name="">\n      </form>\n      </div>\n    ';
     }
   }, {
     key: 'setStyles',
@@ -10577,5 +10629,5 @@ var SearchPanel = exports.SearchPanel = function (_UIBaseComponent) {
   return SearchPanel;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":9}]},{},[6])
+},{"./base-component":10}]},{},[6])
 //# sourceMappingURL=bundle.js.map

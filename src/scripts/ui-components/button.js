@@ -11,7 +11,7 @@ export class Button extends UIBaseComponent {
   addComponent() {
     return `
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-    style="${this.styleString}">
+    style="${this.styles}">
     ${this.title}
     </button>
     `;

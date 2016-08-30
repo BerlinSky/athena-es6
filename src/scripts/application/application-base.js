@@ -4,6 +4,7 @@ import { Navigation } from '../ui-components/navigation';
 import { Footer } from '../ui-components/footer';
 
 import { SearchPanel } from '../ui-components/search-panel';
+import { BookSearchResult } from '../pages/book-search-result-partial.js';
 
 export class ApplicationBase {
     constructor(appTitle) {
@@ -52,6 +53,11 @@ export class ApplicationBase {
     const searchPanel = new SearchPanel();
     const mainContentContainer = this.layout.component.find('.js-mainContentContainer');
     searchPanel.appendToComponent(mainContentContainer);
+
+    const bookSearchResult = new BookSearchResult();
+    console.log('searchResult', bookSearchResult);
+
+    bookSearchResult.appendToComponent(mainContentContainer);
   } 
 
   _appendFooter() {
