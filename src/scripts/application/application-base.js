@@ -6,6 +6,11 @@ import { Footer } from '../ui-components/footer';
 import { SearchPanel } from '../ui-components/search-panel';
 import { BookSearchResult } from '../pages/book-search-result-partial.js';
 
+import { GridTable } from '../ui-components/grid-table';
+
+import { books } from '../data/books-data';
+import { BookDataService } from '../services/book-data-service';
+
 export class ApplicationBase {
     constructor(appTitle) {
       this.appTitle = appTitle;
@@ -54,9 +59,20 @@ export class ApplicationBase {
     const mainContentContainer = this.layout.component.find('.js-mainContentContainer');
     searchPanel.appendToComponent(mainContentContainer);
 
-    const bookSearchResult = new BookSearchResult();
-    console.log('searchResult', bookSearchResult);
+    const dataService = new BookDataService();
+    dataService.populateData(books);
+    const bookList = dataService.getBookListSortedByTitle();
+    // const bookList = dataService.getBookListSortedByIsbn();
 
+    const divider = [2, 3, 3, 3, 3, 2];
+    const tableHeader = "isbn author title publisher pubdate price".split(' ');
+    const gridTable = new GridTable(divider, tableHeader, bookList);
+    gridTable.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
+    gridTable.appendToComponent(mainContentContainer);
+
+
+    const bookSearchResult = new BookSearchResult();
+    bookSearchResult.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
     bookSearchResult.appendToComponent(mainContentContainer);
   } 
 

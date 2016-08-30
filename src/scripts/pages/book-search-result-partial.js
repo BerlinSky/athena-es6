@@ -4,7 +4,7 @@ export class BookSearchResult extends UIBaseComponent {
   
   constructor() {
     super();
-    this.styles = 'background-color: #999; color: #333; padding: 5px 10px;';
+    this.styles = '';
   }
   
   addComponent() {

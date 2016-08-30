@@ -9835,6 +9835,12 @@ var _searchPanel = require('../ui-components/search-panel');
 
 var _bookSearchResultPartial = require('../pages/book-search-result-partial.js');
 
+var _gridTable = require('../ui-components/grid-table');
+
+var _booksData = require('../data/books-data');
+
+var _bookDataService = require('../services/book-data-service');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ApplicationBase = exports.ApplicationBase = function () {
@@ -9894,9 +9900,19 @@ var ApplicationBase = exports.ApplicationBase = function () {
       var mainContentContainer = this.layout.component.find('.js-mainContentContainer');
       searchPanel.appendToComponent(mainContentContainer);
 
-      var bookSearchResult = new _bookSearchResultPartial.BookSearchResult();
-      console.log('searchResult', bookSearchResult);
+      var dataService = new _bookDataService.BookDataService();
+      dataService.populateData(_booksData.books);
+      var bookList = dataService.getBookListSortedByTitle();
+      // const bookList = dataService.getBookListSortedByIsbn();
 
+      var divider = [2, 3, 3, 3, 3, 2];
+      var tableHeader = "isbn author title publisher pubdate price".split(' ');
+      var gridTable = new _gridTable.GridTable(divider, tableHeader, bookList);
+      gridTable.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
+      gridTable.appendToComponent(mainContentContainer);
+
+      var bookSearchResult = new _bookSearchResultPartial.BookSearchResult();
+      bookSearchResult.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
       bookSearchResult.appendToComponent(mainContentContainer);
     }
   }, {
@@ -9911,7 +9927,7 @@ var ApplicationBase = exports.ApplicationBase = function () {
   return ApplicationBase;
 }();
 
-},{"../layout/main-layout":5,"../pages/book-search-result-partial.js":7,"../ui-components/footer":12,"../ui-components/navigation":14,"../ui-components/search-panel":15}],3:[function(require,module,exports){
+},{"../data/books-data":4,"../layout/main-layout":5,"../pages/book-search-result-partial.js":7,"../services/book-data-service":9,"../ui-components/footer":12,"../ui-components/grid-table":13,"../ui-components/navigation":15,"../ui-components/search-panel":16}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10173,7 +10189,7 @@ var BookSearchResult = exports.BookSearchResult = function (_UIBaseComponent) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(BookSearchResult).call(this));
 
-    _this.styles = 'background-color: #999; color: #333; padding: 5px 10px;';
+    _this.styles = '';
     return _this;
   }
 
@@ -10253,7 +10269,7 @@ var HomePage = exports.HomePage = function (_UIBaseComponent) {
   return HomePage;
 }(_baseComponent.UIBaseComponent);
 
-},{"../ui-components/base-component.js":10,"../ui-components/button":11,"../ui-components/image":13}],9:[function(require,module,exports){
+},{"../ui-components/base-component.js":10,"../ui-components/button":11,"../ui-components/image":14}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10499,6 +10515,143 @@ var Footer = exports.Footer = function (_UIBaseComponent) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.GridTable = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _baseComponent = require('./base-component');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GridTable = exports.GridTable = function (_UIBaseComponent) {
+  _inherits(GridTable, _UIBaseComponent);
+
+  function GridTable(divider, header, data) {
+    _classCallCheck(this, GridTable);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GridTable).call(this));
+
+    _this.divider = divider;
+    _this.header = header;
+    _this.data = data;
+    _this.styles = '';
+    return _this;
+  }
+
+  _createClass(GridTable, [{
+    key: 'addComponent',
+    value: function addComponent() {
+      var col = 0;
+
+      var headerRow = '<div class="l-grid__container grid__container grid__container--ruler">\n';
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.header[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var hdr = _step.value;
+
+          headerRow += '\n        <div class="l-grid__span--xs-16 l-grid__span--md-' + this.divider[col] + '">\n          <div class="columnHeading__dataLabel">' + hdr + '</div>\n\n        </div>\n      ';
+
+          col++;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      headerRow += '</div>\n';
+
+      var bodyRow = '';
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var dataRow = _step2.value;
+
+          bodyRow += '<div class="l-grid__container grid__container grid__container--ruler">';
+
+          var _col = 0;
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
+
+          try {
+            for (var _iterator3 = this.header[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var _hdr = _step3.value;
+
+              var dataCol = dataRow[_hdr.toLowerCase()];
+              bodyRow += '\n          <div class="l-grid__span--xs-16 l-grid__span--md-' + this.divider[_col] + '">\n            <div class="dataLabel">ISBN</div>\n            <div class="dataValue">' + dataCol + '</div>\n          </div> \n        ';
+
+              _col++;
+            }
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                _iterator3.return();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
+            }
+          }
+
+          bodyRow += '</div>\n';
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      return '\n      <div style="' + this.styles + '">\n        ' + headerRow + '\n        ' + bodyRow + '\n      </div>\n      ';
+    }
+  }, {
+    key: 'setStyles',
+    value: function setStyles(styles) {
+      this.styles = styles;
+    }
+  }]);
+
+  return GridTable;
+}(_baseComponent.UIBaseComponent);
+
+},{"./base-component":10}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.Image = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10539,7 +10692,7 @@ var Image = exports.Image = function (_UIBaseComponent) {
   return Image;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":10}],14:[function(require,module,exports){
+},{"./base-component":10}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10584,7 +10737,7 @@ var Navigation = exports.Navigation = function (_UIBaseComponent) {
   return Navigation;
 }(_baseComponent.UIBaseComponent);
 
-},{"./base-component":10}],15:[function(require,module,exports){
+},{"./base-component":10}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
