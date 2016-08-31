@@ -9,7 +9,7 @@ export class BookSearchResult extends UIBaseComponent {
   
   addComponent() {
     return `
-      <div style="${this.styles}">
+      <div class="js-mainContentContainer" style="${this.styles}">
         <div class="l-grid__container grid__container grid__container--ruler"> 
           <div class="l-grid__span--xs-16 l-grid__span--md-2">
             <div class="columnHeading__dataLabel">ISBN</div>

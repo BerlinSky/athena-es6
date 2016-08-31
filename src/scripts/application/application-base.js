@@ -87,14 +87,29 @@ export class ApplicationBase {
   _attachSearchEvent() {
     const searchButton = this.layout.component.find('.js-searchBar__button');
     const searchInput = this.layout.component.find('.js-searchBar__inputText');
-    
     const mainContentContainer = this.layout.component.find('.js-mainContentContainer');
 
     searchButton.click(function() {
+      let searchResultContainer = mainContentContainer.find('.js-gridTable');
+      searchResultContainer.remove();
+
+      const searchText = searchInput.val().trim();
+      if (searchText === '') {
+        return;
+      }
+      
       const dataService = new BookDataService();
       dataService.populateData(books);
-      const bookList = dataService.getBookListSortedByTitle();
+
+      let bookList
+      if (searchText === '*') {
+        bookList = dataService.getBookListSortedByTitle();
+      }
+      else {
+        bookList = dataService.searchBooksByTitle(searchText);
+      }
       // const bookList = dataService.getBookListSortedByIsbn();
+
 
       const divider = [2, 3, 3, 3, 3, 2];
       const tableHeader = "isbn author title publisher pubdate price".split(' ');

@@ -46,7 +46,7 @@ export class GridTable extends UIBaseComponent {
     }
 
     return `
-      <div style="${this.styles}">
+      <div class="js-gridTable" style="${this.styles}">
         ${headerRow}
         ${bodyRow}
       </div>
