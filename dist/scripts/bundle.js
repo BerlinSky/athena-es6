@@ -9822,8 +9822,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ApplicationBase = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // import { NavBar } from '../ui-components/nav-bar.js';
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
 
 var _mainLayout = require('../layout/main-layout');
 
@@ -9840,6 +9843,8 @@ var _gridTable = require('../ui-components/grid-table');
 var _booksData = require('../data/books-data');
 
 var _bookDataService = require('../services/book-data-service');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9882,6 +9887,8 @@ var ApplicationBase = exports.ApplicationBase = function () {
       this._appendNavigation();
       this._appendSearchPanel();
       this._appendFooter();
+
+      this._attachSearchEvent();
       // if (this.defaultRoute) {
       //   this.enableRoute(this.defaultRoute);
       // }
@@ -9900,20 +9907,20 @@ var ApplicationBase = exports.ApplicationBase = function () {
       var mainContentContainer = this.layout.component.find('.js-mainContentContainer');
       searchPanel.appendToComponent(mainContentContainer);
 
-      var dataService = new _bookDataService.BookDataService();
-      dataService.populateData(_booksData.books);
-      var bookList = dataService.getBookListSortedByTitle();
+      // const dataService = new BookDataService();
+      // dataService.populateData(books);
+      // const bookList = dataService.getBookListSortedByTitle();
       // const bookList = dataService.getBookListSortedByIsbn();
 
-      var divider = [2, 3, 3, 3, 3, 2];
-      var tableHeader = "isbn author title publisher pubdate price".split(' ');
-      var gridTable = new _gridTable.GridTable(divider, tableHeader, bookList);
-      gridTable.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
-      gridTable.appendToComponent(mainContentContainer);
+      // const divider = [2, 3, 3, 3, 3, 2];
+      // const tableHeader = "isbn author title publisher pubdate price".split(' ');
+      // const gridTable = new GridTable(divider, tableHeader, bookList);
+      // gridTable.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
+      // gridTable.appendToComponent(mainContentContainer);
 
-      var bookSearchResult = new _bookSearchResultPartial.BookSearchResult();
-      bookSearchResult.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
-      bookSearchResult.appendToComponent(mainContentContainer);
+      // const bookSearchResult = new BookSearchResult();
+      // bookSearchResult.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
+      // bookSearchResult.appendToComponent(mainContentContainer);
     }
   }, {
     key: '_appendFooter',
@@ -9922,12 +9929,33 @@ var ApplicationBase = exports.ApplicationBase = function () {
       var footerContainer = this.layout.component.find('.js-footerContainer');
       footer.appendToComponent(footerContainer);
     }
+  }, {
+    key: '_attachSearchEvent',
+    value: function _attachSearchEvent() {
+      var searchButton = this.layout.component.find('.js-searchBar__button');
+      var searchInput = this.layout.component.find('.js-searchBar__inputText');
+
+      var mainContentContainer = this.layout.component.find('.js-mainContentContainer');
+
+      searchButton.click(function () {
+        var dataService = new _bookDataService.BookDataService();
+        dataService.populateData(_booksData.books);
+        var bookList = dataService.getBookListSortedByTitle();
+        // const bookList = dataService.getBookListSortedByIsbn();
+
+        var divider = [2, 3, 3, 3, 3, 2];
+        var tableHeader = "isbn author title publisher pubdate price".split(' ');
+        var gridTable = new _gridTable.GridTable(divider, tableHeader, bookList);
+        gridTable.setStyles("background-color: #fff; color: #333; padding: 5px 10px;");
+        gridTable.appendToComponent(mainContentContainer);
+      });
+    }
   }]);
 
   return ApplicationBase;
 }();
 
-},{"../data/books-data":4,"../layout/main-layout":5,"../pages/book-search-result-partial.js":7,"../services/book-data-service":9,"../ui-components/footer":12,"../ui-components/grid-table":13,"../ui-components/navigation":15,"../ui-components/search-panel":16}],3:[function(require,module,exports){
+},{"../data/books-data":4,"../layout/main-layout":5,"../pages/book-search-result-partial.js":7,"../services/book-data-service":9,"../ui-components/footer":12,"../ui-components/grid-table":13,"../ui-components/navigation":15,"../ui-components/search-panel":16,"jquery":1}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10770,7 +10798,7 @@ var SearchPanel = exports.SearchPanel = function (_UIBaseComponent) {
   _createClass(SearchPanel, [{
     key: 'addComponent',
     value: function addComponent() {
-      return '\n      <div class="formContainer">\n      <form class="searchBar">\n      <input type="text" class="searchBar__inputText" placeholder="Search ..." name="">\n      <input type="submit" class="searchBar__button" value="" name="">\n      </form>\n      </div>\n    ';
+      return '\n      <div class="formContainer">\n      <form class="searchBar">\n      <input type="text" class="searchBar__inputText js-searchBar__inputText" placeholder="Search ..." name="">\n      <input type="button" class="searchBar__button js-searchBar__button" value="" name="">\n      </form>\n      </div>\n    ';
     }
   }, {
     key: 'setStyles',

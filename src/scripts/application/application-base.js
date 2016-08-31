@@ -1,4 +1,5 @@
-// import { NavBar } from '../ui-components/nav-bar.js';
+import $ from 'jquery';
+
 import { MainLayout } from '../layout/main-layout';
 import { Navigation } from '../ui-components/navigation';
 import { Footer } from '../ui-components/footer';
@@ -43,6 +44,8 @@ export class ApplicationBase {
     this._appendNavigation();
     this._appendSearchPanel();                                
     this._appendFooter();
+
+    this._attachSearchEvent()
     // if (this.defaultRoute) {
     //   this.enableRoute(this.defaultRoute);
     // }
@@ -59,21 +62,20 @@ export class ApplicationBase {
     const mainContentContainer = this.layout.component.find('.js-mainContentContainer');
     searchPanel.appendToComponent(mainContentContainer);
 
-    const dataService = new BookDataService();
-    dataService.populateData(books);
-    const bookList = dataService.getBookListSortedByTitle();
+    // const dataService = new BookDataService();
+    // dataService.populateData(books);
+    // const bookList = dataService.getBookListSortedByTitle();
     // const bookList = dataService.getBookListSortedByIsbn();
 
-    const divider = [2, 3, 3, 3, 3, 2];
-    const tableHeader = "isbn author title publisher pubdate price".split(' ');
-    const gridTable = new GridTable(divider, tableHeader, bookList);
-    gridTable.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
-    gridTable.appendToComponent(mainContentContainer);
+    // const divider = [2, 3, 3, 3, 3, 2];
+    // const tableHeader = "isbn author title publisher pubdate price".split(' ');
+    // const gridTable = new GridTable(divider, tableHeader, bookList);
+    // gridTable.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
+    // gridTable.appendToComponent(mainContentContainer);
 
-
-    const bookSearchResult = new BookSearchResult();
-    bookSearchResult.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
-    bookSearchResult.appendToComponent(mainContentContainer);
+    // const bookSearchResult = new BookSearchResult();
+    // bookSearchResult.setStyles("background-color: #999; color: #333; padding: 5px 10px;");
+    // bookSearchResult.appendToComponent(mainContentContainer);
   } 
 
   _appendFooter() {
@@ -81,4 +83,25 @@ export class ApplicationBase {
     const footerContainer = this.layout.component.find('.js-footerContainer');
     footer.appendToComponent(footerContainer);
   }
+
+  _attachSearchEvent() {
+    const searchButton = this.layout.component.find('.js-searchBar__button');
+    const searchInput = this.layout.component.find('.js-searchBar__inputText');
+    
+    const mainContentContainer = this.layout.component.find('.js-mainContentContainer');
+
+    searchButton.click(function() {
+      const dataService = new BookDataService();
+      dataService.populateData(books);
+      const bookList = dataService.getBookListSortedByTitle();
+      // const bookList = dataService.getBookListSortedByIsbn();
+
+      const divider = [2, 3, 3, 3, 3, 2];
+      const tableHeader = "isbn author title publisher pubdate price".split(' ');
+      const gridTable = new GridTable(divider, tableHeader, bookList);
+      gridTable.setStyles("background-color: #fff; color: #333; padding: 5px 10px;");
+      gridTable.appendToComponent(mainContentContainer);
+    });
+  }
 }
+

@@ -11,8 +11,8 @@ export class SearchPanel extends UIBaseComponent {
     return `
       <div class="formContainer">
       <form class="searchBar">
-      <input type="text" class="searchBar__inputText" placeholder="Search ..." name="">
-      <input type="submit" class="searchBar__button" value="" name="">
+      <input type="text" class="searchBar__inputText js-searchBar__inputText" placeholder="Search ..." name="">
+      <input type="button" class="searchBar__button js-searchBar__button" value="" name="">
       </form>
       </div>
     `;
